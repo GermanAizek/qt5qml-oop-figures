@@ -2,10 +2,10 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 
 Page {
-    width: 600
-    height: 400
+    width: parent
+    height: parent
 
-    title: qsTr("Page 1")
+    title: qsTr("Обо мне")
 
     Label {
         text: qsTr("You are on Page 1.")

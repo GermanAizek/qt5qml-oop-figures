@@ -29,6 +29,8 @@ find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick REQUIRED)
 
 set(PROJECT_SOURCES
         main.cpp
+        classes.cpp
+        classes.h
         qml.qrc
 )
 

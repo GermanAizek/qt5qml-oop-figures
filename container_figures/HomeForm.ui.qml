@@ -2,13 +2,15 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 
 Page {
-    width: 600
-    height: 400
+    width: parent
+    height: parent
 
-    title: qsTr("Home")
+    title: qsTr("Демо с фигурами")
 
     Label {
-        text: qsTr("You are on the home page.")
-        anchors.centerIn: parent
+        text: qsTr("Нажмите справа вверху для создания геометрических фигур, снизу кнопка очищает структуру объектов.")
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.top: parent.top
+        anchors.topMargin: 32
     }
 }

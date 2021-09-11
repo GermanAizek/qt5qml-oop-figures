@@ -1,3 +1,4 @@
+#include <classes.h>
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 
@@ -10,6 +11,7 @@ int main(int argc, char *argv[])
 
 	QGuiApplication app(argc, argv);
 
+	qmlRegisterType<Circle>("CustomClass.Figures", 1, 0, "Circle");
 	QQmlApplicationEngine engine;
 	const QUrl url(QStringLiteral("qrc:/main.qml"));
 	QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
