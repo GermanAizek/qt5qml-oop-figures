@@ -53,6 +53,7 @@ Page {
         anchors.margins: 10
         radius: 10
         color: "#DFE2EB"
+        visible: parent.height > 200 ? true : false
 
         Rectangle {
             id: quest
@@ -65,7 +66,7 @@ Page {
             radius: 15
             border.color: "#D4E0E8"
             border.width: 1
-            visible: parent.height > 100 || parent.width > 200 ? true : false
+            visible: parent.height > 350 ? true : false
 
             Label {
                 width: parent.width - 64
@@ -90,7 +91,7 @@ Page {
         Rectangle {
             id: answer
             width: parent.width / 1.5
-            height: parent.height > 450 ? 64 : 160
+            height: parent.height > 650 ? 64 : 86
             anchors.top: parent.top
             anchors.topMargin: parent.width > 600 ? 160 : 104
             anchors.right: parent.right
@@ -99,7 +100,7 @@ Page {
             border.color: "#B9D9BE"
             border.width: 1
             color: "#E2FFC9"
-            visible: parent.height > 200 || parent.width > 200 ? true : false
+            visible: parent.height > 370 ? true : false
 
             Label {
                 width: parent.width - 64
@@ -126,13 +127,13 @@ Page {
             width: parent.width / 1.5
             height: 64
             anchors.top: parent.top
-            anchors.topMargin: parent.width > 600 ? 288 : 144
+            anchors.topMargin: parent.width > 600 ? 288 : 208
             anchors.left: parent.left
             anchors.leftMargin: 64
             radius: 15
             border.color: "#D4E0E8"
             border.width: 1
-            visible: parent.height > 350 || parent.width > 200 ? true : false
+            visible: parent.height > 400 ? true : false
 
             Label {
                 width: parent.width - 64
@@ -159,14 +160,14 @@ Page {
             width: parent.width / 1.5
             height: 128
             anchors.top: parent.top
-            anchors.topMargin: parent.width > 600 ? 384 : 192
+            anchors.topMargin: parent.width > 600 ? 384 : 312
             anchors.right: parent.right
             anchors.rightMargin: 64
             radius: 15
             border.color: "#B9D9BE"
             border.width: 1
             color: "#E2FFC9"
-            visible: parent.height > 600 || parent.width > 200 ? true : false
+            visible: parent.height > 450 ? true : false
 
             Label {
                 width: parent.width - 64
@@ -187,7 +188,7 @@ Page {
                 wrapMode: Text.WordWrap
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.top: parent.top
-                anchors.topMargin: parent.width > 600 ? 16 : 4
+                anchors.topMargin: parent.width > 600 ? 80 : 100
             }
 
             OpacityAnimator {

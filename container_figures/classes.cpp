@@ -7,27 +7,19 @@ static int rndColor()
 	return (qrand() % (255 + 1));
 }
 
-Circle::Circle(QQuickPaintedItem *parent)
-	//: QQuickPaintedItem(QPixmap())
-{}
-
-void Circle::paint(QPainter *painter)
+void Circle::paint(QPainter* painter)
 {
-	//painter->save();
-	//painter->setRenderHint(QPainter::Antialiasing);
+	painter->save();
+	painter->setRenderHint(QPainter::Antialiasing);
 	painter->setPen(QPen(QColor(rndColor(), rndColor(), rndColor(), 255), 20));
 	painter->drawEllipse(getPos(), getSize(), getSize());
-	//painter->restore();
+	painter->restore();
 }
 
-Triangle::Triangle(QQuickPaintedItem *parent)
-	//: QQuickPaintedItem(parent)
-{}
-
-void Triangle::paint(QPainter *painter)
+void Triangle::paint(QPainter* painter)
 {
-	//painter->save();
-	//painter->setRenderHint(QPainter::Antialiasing);
+	painter->save();
+	painter->setRenderHint(QPainter::Antialiasing);
 	painter->setPen(QPen(QColor(rndColor(), rndColor(), rndColor(), 255), 20));
 	QPolygonF Rectangle;
 	int x1 = getPos().x();
@@ -41,17 +33,13 @@ void Triangle::paint(QPainter *painter)
 	Rectangle.append(QPointF(x2,y2));
 	Rectangle.append(QPointF(x3,y3));
 	painter->drawPolygon(Rectangle);
-	//painter->restore();
+	painter->restore();
 }
 
-Square::Square(QQuickPaintedItem *parent)
-	//: QQuickPaintedItem(parent)
-{}
-
-void Square::paint(QPainter *painter)
+void Square::paint(QPainter* painter)
 {
-	//painter->save();
-	//painter->setRenderHint(QPainter::Antialiasing);
+	painter->save();
+	painter->setRenderHint(QPainter::Antialiasing);
 	painter->setPen(QPen(QColor(rndColor(), rndColor(), rndColor(), 255), 20));
 	int x1 = getPos().x();
 	int y1 = getPos().y();
@@ -59,6 +47,14 @@ void Square::paint(QPainter *painter)
 	int y2 = getPos().y() + getSize()*0.8f;
 
 	painter->drawRect(QRect(x1,y1,x2,y2));
-	//painter->restore();
+	painter->restore();
 }
 
+void Cleaner::paint(QPainter* painter)
+{
+	painter->save();
+	painter->setRenderHint(QPainter::Antialiasing);
+	painter->setBackground(QBrush(QColor(250, 250, 250, 255)));
+	painter->eraseRect(0,0,10000,10000);
+	painter->restore();
+}

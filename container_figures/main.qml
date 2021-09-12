@@ -2,21 +2,24 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtGraphicalEffects 1.0
 import CustomClass.Figures 1.0
-
-// stackView.depth > 1 ?
+import "redrawer.js" as Redrawer
 
 ApplicationWindow {
     id: window
-    width: 640
-    height: 480
+    width: 1024
+    height: 768
     visibility: Qt.WindowFullScreen
     title: qsTr("QML PainterFigure")
-    property int spacingval: 5
-    // init pos
-    property int x: 200
-    property int y: 200
 
+    // init pos
+    property int spacingval: 15
+    property int x: 100
+    property int y: 100
+
+    // graphic object
+    property var typesArray: []
     property var figuresArray: []
+    property var posArray: []
 
     header: ToolBar {
         contentHeight: about.implicitHeight
@@ -48,10 +51,14 @@ ApplicationWindow {
             anchors.right: parent.right
             anchors.rightMargin: 96
             onClicked: {
+                Redrawer.draw();
                 var newObject = Qt.createQmlObject('import CustomClass.Figures 1.0; Circle { anchors.fill: parent; anchors.leftMargin: window.x; anchors.topMargin: window.y; }',
                                                    figuresfield,
-                                                   "dynamicSnippet" + (Math.random() + 1).toString(36));
+                                                   "dynamicSnippet");
                 figuresArray.push(newObject);
+                typesArray.push("circle");
+                posArray.push([window.x,window.y])
+                counter.text = "Количество фигур в массиве: " + figuresArray.length;
                 window.x += window.spacingval;
                 window.y += window.spacingval;
             }
@@ -72,10 +79,14 @@ ApplicationWindow {
             anchors.right: parent.right
             anchors.rightMargin: 48
             onClicked: {
+                Redrawer.draw();
                 var newObject = Qt.createQmlObject('import CustomClass.Figures 1.0; Triangle { anchors.fill: parent; anchors.leftMargin: window.x; anchors.topMargin: window.y; }',
                                                    figuresfield,
-                                                   "dynamicSnippet1");
+                                                   "dynamicSnippet");
                 figuresArray.push(newObject);
+                typesArray.push("triangle");
+                posArray.push([window.x,window.y])
+                counter.text = "Количество фигур в массиве: " + figuresArray.length;
                 window.x += window.spacingval;
                 window.y += window.spacingval;
             }
@@ -96,10 +107,14 @@ ApplicationWindow {
             anchors.right: parent.right
             anchors.rightMargin: 0
             onClicked: {
+                Redrawer.draw();
                 var newObject = Qt.createQmlObject('import CustomClass.Figures 1.0; Square { anchors.fill: parent; anchors.leftMargin: window.x; anchors.topMargin: window.y; }',
                                                    figuresfield,
                                                    "dynamicSnippet");
                 figuresArray.push(newObject);
+                typesArray.push("square");
+                posArray.push([window.x,window.y])
+                counter.text = "Количество фигур в массиве: " + figuresArray.length;
                 window.x += window.spacingval;
                 window.y += window.spacingval;
             }
@@ -232,29 +247,46 @@ ApplicationWindow {
 
     Label {
         id: figuresfield
-        width: parent.width - 100
+        width: parent.width
         height: parent.height - 100
-        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.fill: parent
+        anchors.top: parent.top
+        anchors.topMargin: 100
     }
 
     Label {
-        id: buttons
+        id: counter
         width: parent.width
-        height: 64
+        height: 128
+        anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        anchors.leftMargin: 32
+        text: qsTr("Количество фигур в массиве: 0")
 
         Button {
             id: buttonClear
             width: window.width - 128
+            anchors.bottom: parent.bottom
             anchors.horizontalCenter: parent.horizontalCenter
             font.family: "Roboto"
             font.bold: true
             font.italic: false
             text: qsTr("Очистить")
+            property var prevcleaner: null
             onClicked: {
-                figuresArray.splice(0, figuresArray.length)
-                window.x = 200;
-                window.y = 200;
+                if (prevcleaner) prevcleaner.destroy()
+                for (var i = 0; i < figuresArray.length; i++) {
+                    figuresArray[i].destroy();
+                }
+                figuresArray.splice(0, figuresArray.length);
+                typesArray.splice(0, figuresArray.length);
+                posArray.splice(0, figuresArray.length);
+
+                counter.text = "Количество фигур в массиве: " + figuresArray.length;
+                prevcleaner = Qt.createQmlObject('import CustomClass.Figures 1.0; Cleaner { anchors.fill: parent; }', figuresfield, "dynamicSnippet");
+                window.x = 100;
+                window.y = 100;
             }
         }
     }

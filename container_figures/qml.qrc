@@ -7,5 +7,6 @@
         <file>images/back.gif</file>
         <file>images/back2.gif</file>
         <file>images/seriouscat.jpg</file>
+        <file>redrawer.js</file>
     </qresource>
 </RCC>
