@@ -1,8 +1,11 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
-        <file>HomeForm.ui.qml</file>
+        <file>instruction.ui.qml</file>
         <file>about.ui.qml</file>
         <file>qtquickcontrols2.conf</file>
+        <file>images/back.gif</file>
+        <file>images/back2.gif</file>
+        <file>images/seriouscat.jpg</file>
     </qresource>
 </RCC>

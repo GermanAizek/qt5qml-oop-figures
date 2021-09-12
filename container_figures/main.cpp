@@ -1,7 +1,7 @@
 #include <classes.h>
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
-
+#include <QTime>
 
 int main(int argc, char *argv[])
 {
@@ -9,9 +9,15 @@ int main(int argc, char *argv[])
 	QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
 
+	// init qrand for random color for each figure
+	QTime midnight(0,0,0);
+	qsrand(midnight.secsTo(QTime::currentTime()));
+
 	QGuiApplication app(argc, argv);
 
 	qmlRegisterType<Circle>("CustomClass.Figures", 1, 0, "Circle");
+	qmlRegisterType<Triangle>("CustomClass.Figures", 1, 0, "Triangle");
+	qmlRegisterType<Square>("CustomClass.Figures", 1, 0, "Square");
 	QQmlApplicationEngine engine;
 	const QUrl url(QStringLiteral("qrc:/main.qml"));
 	QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,

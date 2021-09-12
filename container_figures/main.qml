@@ -1,5 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import QtGraphicalEffects 1.0
+import CustomClass.Figures 1.0
 
 // stackView.depth > 1 ?
 
@@ -8,8 +10,13 @@ ApplicationWindow {
     width: 640
     height: 480
     visibility: Qt.WindowFullScreen
-    title: qsTr("Stack")
-    property int spacingval: 10
+    title: qsTr("QML PainterFigure")
+    property int spacingval: 5
+    // init pos
+    property int x: 200
+    property int y: 200
+
+    property var figuresArray: []
 
     header: ToolBar {
         contentHeight: about.implicitHeight
@@ -27,6 +34,7 @@ ApplicationWindow {
                     triangle.visible = true
                     square.visible = true
                     buttonClear.visible = true
+                    figuresfield.visible = true
                 } else {
                     drawer.open()
                 }
@@ -40,11 +48,12 @@ ApplicationWindow {
             anchors.right: parent.right
             anchors.rightMargin: 96
             onClicked: {
-                if (stackView.depth > 1) {
-                    stackView.pop()
-                } else {
-                    drawer.open()
-                }
+                var newObject = Qt.createQmlObject('import CustomClass.Figures 1.0; Circle { anchors.fill: parent; anchors.leftMargin: window.x; anchors.topMargin: window.y; }',
+                                                   figuresfield,
+                                                   "dynamicSnippet" + (Math.random() + 1).toString(36));
+                figuresArray.push(newObject);
+                window.x += window.spacingval;
+                window.y += window.spacingval;
             }
             onPressed: {
                 circle.text = "\u25CF"
@@ -63,12 +72,12 @@ ApplicationWindow {
             anchors.right: parent.right
             anchors.rightMargin: 48
             onClicked: {
-                //triangle.text = "\u25B4"
-                if (stackView.depth > 1) {
-                    stackView.pop()
-                } else {
-                    drawer.open()
-                }
+                var newObject = Qt.createQmlObject('import CustomClass.Figures 1.0; Triangle { anchors.fill: parent; anchors.leftMargin: window.x; anchors.topMargin: window.y; }',
+                                                   figuresfield,
+                                                   "dynamicSnippet1");
+                figuresArray.push(newObject);
+                window.x += window.spacingval;
+                window.y += window.spacingval;
             }
             onPressed: {
                 triangle.text = "\u25B4"
@@ -87,10 +96,12 @@ ApplicationWindow {
             anchors.right: parent.right
             anchors.rightMargin: 0
             onClicked: {
-                var newObject = Qt.createQmlObject('import CustomClass.Figures 1.0; Circle { anchors.leftMargin: window.spacingval; anchors.topMargin: window.spacingval; anchors.fill: parent; }',
+                var newObject = Qt.createQmlObject('import CustomClass.Figures 1.0; Square { anchors.fill: parent; anchors.leftMargin: window.x; anchors.topMargin: window.y; }',
                                                    figuresfield,
-                                                   "dynamicSnippet1");
-                window.spacingval += 10;
+                                                   "dynamicSnippet");
+                figuresArray.push(newObject);
+                window.x += window.spacingval;
+                window.y += window.spacingval;
             }
             onPressed: {
                 square.text = "\u25A0"
@@ -100,6 +111,7 @@ ApplicationWindow {
                 square.text = "\u25A1"
                 square.font.pixelSize = Qt.application.font.pixelSize * 1.6
             }
+
         }
 
         Label {
@@ -110,58 +122,139 @@ ApplicationWindow {
 
     Drawer {
         id: drawer
-        width: window.width * 0.66
+        width: window.width * 0.33
         height: window.height
 
         Column {
             anchors.fill: parent
 
             ItemDelegate {
-                text: qsTr("Обо мне")
                 width: parent.width
+                height: 200
+                Rectangle {
+                    width: parent.width
+                    height: parent.height
+                    color: "#4C84B5"
+
+                    Image {
+                        id: avatar
+                        width: 76
+                        height: 76
+                        anchors.left: parent.left
+                        anchors.leftMargin: 30
+                        anchors.top: parent.top
+                        anchors.topMargin: 50
+                        visible: false
+                        source: "images/seriouscat.jpg"
+                    }
+
+                    OpacityMask {
+                        anchors.fill: avatar
+                        source: avatar
+                        maskSource: Rectangle {
+                            id: opacitymask
+                            width: avatar.width
+                            height: avatar.height
+                            radius: 50
+                            visible: false
+                        }
+                    }
+
+                    Label {
+                        font.family: "Roboto"
+                        font.bold: true
+                        font.pixelSize: 16
+                        text: qsTr("German Semenov")
+                        color: "white"
+                        anchors.left: parent.left
+                        anchors.leftMargin: 30
+                        anchors.top: parent.top
+                        anchors.topMargin: 140
+                    }
+
+                    Label {
+                        font.family: "Roboto"
+                        text: "<a href='tel:+74991120119'>+7 (499) 112-01-19</a>"
+                        linkColor: "white"
+                        anchors.left: parent.left
+                        anchors.leftMargin: 30
+                        anchors.top: parent.top
+                        anchors.topMargin: 168
+                        onLinkActivated: Qt.openUrlExternally('tel:+74991120119')
+                    }
+                }
+            }
+
+            ItemDelegate {
+                width: parent.width
+
+                Label {
+                    font.family: "Roboto"
+                    font.pixelSize: 22
+                    text: "\u260E"
+                    color: "grey"
+                    anchors.left: parent.left
+                    anchors.leftMargin: 30
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+
+                Label {
+                    font.family: "Roboto"
+                    font.pixelSize: 16
+                    text: qsTr("About me")
+                    width: parent.width
+                    anchors.left: parent.left
+                    anchors.leftMargin: 90
+                    anchors.verticalCenter: parent.verticalCenter
+                }
                 onClicked: {
                     circle.visible = false
                     triangle.visible = false
                     square.visible = false
                     buttonClear.visible = false
+                    figuresfield.visible = false
                     stackView.push("about.ui.qml")
                     drawer.close()
                 }
+
+
+
+
             }
         }
     }
 
     StackView {
         id: stackView
-        initialItem: "HomeForm.ui.qml"
+        initialItem: "instruction.ui.qml"
         anchors.fill: parent
     }
 
-    Row {
+    Label {
         id: figuresfield
         width: parent.width - 100
         height: parent.height - 100
-        spacing: 5
-        anchors.topMargin: 10
-        anchors.bottomMargin: 10
         anchors.horizontalCenter: parent.horizontalCenter
     }
 
-    Row {
+    Label {
         id: buttons
         width: parent.width
         height: 64
-        //visible: true
         anchors.bottom: parent.bottom
-        anchors.horizontalCenter: parent.horizontalCenter
 
         Button {
             id: buttonClear
+            width: window.width - 128
             anchors.horizontalCenter: parent.horizontalCenter
-            width: window.width - 20
+            font.family: "Roboto"
+            font.bold: true
+            font.italic: false
             text: qsTr("Очистить")
             onClicked: {
-                window.spacingval = 0;
+                figuresArray.splice(0, figuresArray.length)
+                window.x = 200;
+                window.y = 200;
             }
         }
     }

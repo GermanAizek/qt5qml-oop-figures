@@ -6,19 +6,26 @@
 class Figure : public QQuickPaintedItem
 {
 	Q_OBJECT
+	//Q_PROPERTY(bool getPos READ getPos CONSTANT)
+	//Q_PROPERTY(bool getSize READ getSize CONSTANT)
 
 public:
-	Figure(QQuickPaintedItem *parent = nullptr);
-
+	Figure(QQuickPaintedItem* parent = nullptr)
+		: pos(std::move(QPointF(80, 80)))
+		, size(64)
+	{}
+	QPointF getPos() const { return pos; }
+	int getSize() const { return size; }
+/*
 public slots:
-	QPointF getPos() { return pos; }
-	int getSize() { return size; }
+
 	QPointF setPos(int x, int y) { pos = std::move(QPointF(x, y)); }
 	int setSize(int newsize) { size = newsize; }
+*/
 
 private:
-	QPointF pos = QPointF(100, 100);
-	int size = 64;
+	QPointF pos;
+	int size;
 };
 
 class Circle : public Figure
@@ -26,10 +33,11 @@ class Circle : public Figure
 	Q_OBJECT
 
 public:
-	Circle(QQuickPaintedItem *parent = nullptr);
+	Circle(QQuickPaintedItem* parent = nullptr);
+
 
 protected:
-	void paint(QPainter *painter);
+	void paint(QPainter* painter);
 };
 
 class Triangle : public Figure
@@ -37,10 +45,10 @@ class Triangle : public Figure
 	Q_OBJECT
 
 public:
-	Triangle(QQuickPaintedItem *parent = nullptr);
+	Triangle(QQuickPaintedItem* parent = nullptr);
 
 protected:
-	void paint(QPainter *painter);
+	void paint(QPainter* painter);
 };
 
 class Square : public Figure
@@ -48,25 +56,10 @@ class Square : public Figure
 	Q_OBJECT
 
 public:
-	Square(QQuickPaintedItem *parent = nullptr);
+	Square(QQuickPaintedItem* parent = nullptr);
 
 protected:
-	void paint(QPainter *painter);
-};
-
-class FigureManager : public QObject
-{
-	Q_OBJECT
-	Q_PROPERTY(QList<QObject*> figures READ getFigureList NOTIFY figuresChanged)
-
-public:
-	QList<QObject*> getFigureList() const { return figurelist; }
-
-signals:
-	void figuresChanged();
-
-private:
-	QList<QObject*> figurelist;
+	void paint(QPainter* painter);
 };
 
 #endif // CLASSES_H
